@@ -7,7 +7,9 @@ CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation
 We used the [USERTrust ECC Certification Authority](http://www.tbs-x509.com/USERTrustECCCertificationAuthority.crt)
 
 Key template:
-openssl ecparam -name secp384r1 -genkey -noout -out p384-key.pem -param_enc explicit
+```bash
+$ openssl ecparam -name secp384r1 -genkey -noout -out p384-key.pem -param_enc explicit
+```
 
 To generate a private key which match the public key certificate we used the script **gen-key.py**. Then to generate the rogue CA:
 
