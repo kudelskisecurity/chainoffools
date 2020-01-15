@@ -11,8 +11,10 @@ Q = Point(int(pubkey[0:96],16), int(pubkey[96:],16), curve=P384)
 
 # Generate rogue generator
 privkey_inv = 2
+# we take the private key as being the inverse of 2 modulo the curve order
 privkey = gmpy2.invert(privkey_inv,P384.q)
 privkey = unhexlify(f'{privkey:x}'.encode())
+# we multply our public key Q with the inverse of our chosen private key value
 rogueG = privkey_inv * Q
 rogueG = unhexlify(b"04" + f'{rogueG.x:x}'.encode() + f'{rogueG.y:x}'.encode())
 
