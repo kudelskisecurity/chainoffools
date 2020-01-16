@@ -11,7 +11,7 @@ Key template:
 $ openssl ecparam -name secp384r1 -genkey -noout -out p384-key.pem -param_enc explicit
 ```
 
-To generate a private key which match the public key certificate we used the script **gen-key.py**. Then to generate the rogue CA:
+To generate a private key which match the public key certificate we used the script **gen-key.py** (works with Python 3.6 and above). Then to generate the rogue CA:
 
 ```bash
 $ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -set_serial 0x5c8b99c55a94c5d27156decd8980cc26
