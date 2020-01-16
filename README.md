@@ -1,6 +1,6 @@
 # CryptoAPI
 
-CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation
+CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation. More information in our [blog post](https://research.kudelskisecurity.com/2020/01/15/cve-2020-0601-the-chainoffools-attack-explained-with-poc).
 
 # CA certificate
 
