@@ -19,7 +19,7 @@ $ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -set_serial 0
 
 With "C = US, ST = New Jersey, L = Jersey City, O = The USERTRUST Network, CN = USERTrust ECC Certification Authority" parameters
 
-The we generate the following private key and certificate:
+Then we generate the following private key and certificate:
 ```bash
 openssl ecparam -name prime256v1 -genkey -noout -out prime256v1-privkey.pem
 
