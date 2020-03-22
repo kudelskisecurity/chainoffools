@@ -4,9 +4,14 @@ CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation. More infor
 
 # CA certificate
 
-We used the [USERTrust ECC Certification Authority](http://www.tbs-x509.com/USERTrustECCCertificationAuthority.crt)
+We used the [USERTrust ECC Certification Authority](http://www.tbs-x509.com/USERTrustECCCertificationAuthority.crt) but it can be any root certificate working on P-384 curve.
 
-To generate a private key which match the public key certificate we used the script **gen-key.py** (works with Python 3.6 and above). The key can be displayed with:
+To generate a private key which match the public key from the root certificate we used the script **gen-key.py** (works with Python 3.6 and above):
+```bash
+$ gen-key.py RootCert.pem 
+```
+
+The key can be displayed with:
 ```bash
 $ openssl ec -in p384-key-rogue.pem -text
 ```

