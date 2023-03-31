@@ -2,13 +2,19 @@
 
 CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation. More information in our [blog post](https://research.kudelskisecurity.com/2020/01/15/cve-2020-0601-the-chainoffools-attack-explained-with-poc).
 
+# Install requirements
+
+```bash
+pip install -U -r requirements.txt
+```
+
 # CA certificate
 
 We used the [USERTrust ECC Certification Authority](http://www.tbs-x509.com/USERTrustECCCertificationAuthority.crt) but it can be any root certificate working on P-384 curve.
 
 To generate a private key which match the public key from the root certificate we used the script **gen-key.py** (works with Python 3.6 and above):
 ```bash
-$ gen-key.py RootCert.pem 
+$ ./gen-key.py RootCert.pem 
 ```
 
 The key can be displayed with:

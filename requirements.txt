@@ -1,0 +1,2 @@
+gmpy2
+fastecdsa

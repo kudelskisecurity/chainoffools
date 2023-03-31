@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import gmpy2
 import sys
 
@@ -60,7 +61,7 @@ if __name__ == "__main__":
     # we take the private key as being 2
     privkey = 2
     # we multiply our public key Q with the inverse of our chosen private key value
-    rogueG = gmpy2.invert(privkey,P384.q) * Q
+    rogueG = int(gmpy2.invert(privkey, P384.q)) * Q
     der = DerSequence(generate_privkey(privkey, rogueG))
     # Generate new file
     f = open('p384-key-rogue.pem','w')
