@@ -38,3 +38,8 @@ openssl req -key prime256v1-privkey.pem -config openssl.cnf -new -out prime256v1
 
 openssl x509 -req -in prime256v1.csr -CA ca-rogue.pem -CAkey p384-key-rogue.pem -CAcreateserial -out client-cert.pem -days 500 -extensions v3_req -extfile openssl.cnf 
 ```
+
+Finally to have the complete chain in a single file we concatenate the CA and the server certificates:
+```bash
+cat client-cert.pem ca-rogue.pem >> cert.pem
+```
