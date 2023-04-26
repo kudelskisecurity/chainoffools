@@ -7,11 +7,11 @@ C = CH
 ST = Vaud
 L = Lausanne
 O = Kudelski Security
-CN = github.com
+CN = NorthSec 2023
 [v3_req]
 subjectAltName = @alt_names
 [alt_names]
 DNS.1   = *.kudelskisecurity.com
 DNS.2   = *.microsoft.com
 DNS.3   = *.google.com
-DNS.4   = *.wouaib.ch
+DNS.4   = *.ktp.dev

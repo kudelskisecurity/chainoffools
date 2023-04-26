@@ -25,10 +25,8 @@ $ openssl ec -in p384-key-rogue.pem -text
 Then to generate the rogue CA:
 
 ```bash
-$ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -set_serial 0x5c8b99c55a94c5d27156decd8980cc26 -days 500
+$ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -config ca.cnf -days 500
 ```
-
-With "C = US, ST = New Jersey, L = Jersey City, O = The USERTRUST Network, CN = USERTrust ECC Certification Authority" parameters
 
 Then we generate the following private key and certificate:
 ```bash
