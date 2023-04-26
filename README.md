@@ -25,7 +25,7 @@ $ openssl ec -in p384-key-rogue.pem -text
 Then to generate the rogue CA:
 
 ```bash
-$ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -set_serial 0x5c8b99c55a94c5d27156decd8980cc26
+$ openssl req -key p384-key-rogue.pem -new -out ca-rogue.pem -x509 -set_serial 0x5c8b99c55a94c5d27156decd8980cc26 -days 500
 ```
 
 With "C = US, ST = New Jersey, L = Jersey City, O = The USERTRUST Network, CN = USERTrust ECC Certification Authority" parameters
@@ -41,5 +41,5 @@ openssl x509 -req -in prime256v1.csr -CA ca-rogue.pem -CAkey p384-key-rogue.pem 
 
 Finally to have the complete chain in a single file we concatenate the CA and the server certificates:
 ```bash
-cat client-cert.pem ca-rogue.pem >> cert.pem
+cat client-cert.pem ca-rogue.pem > cert.pem
 ```
