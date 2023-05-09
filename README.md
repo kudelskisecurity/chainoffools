@@ -8,6 +8,8 @@ CVE-2020-0601: Windows CryptoAPI Spoofing Vulnerability exploitation. More infor
 pip install -U -r requirements.txt
 ```
 
+The certificate generation works with OpenSSL verion up to [1.0.2u](https://github.com/openssl/openssl/releases/tag/OpenSSL_1_0_2u).
+
 # CA certificate
 
 We used the [USERTrust ECC Certification Authority](http://www.tbs-x509.com/USERTrustECCCertificationAuthority.crt) but it can be any root certificate working on P-384 curve.
